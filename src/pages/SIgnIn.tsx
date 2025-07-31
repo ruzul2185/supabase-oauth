@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../services/supabaseClient";
 import { useNavigate } from "react-router";
 
@@ -8,12 +8,24 @@ export default function SignIn() {
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
+  // ✅ Redirect to home if user is already logged in
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session) {
+        navigate("/");
+      }
+    };
+    checkSession();
+  }, [navigate]);
+
   const handleSignIn = async () => {
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-
     if (error) {
       setErrorMsg(error.message);
     } else {
@@ -23,18 +35,13 @@ export default function SignIn() {
 
   const handleOAuthSignIn = async (provider: "google" | "github") => {
     const { error } = await supabase.auth.signInWithOAuth({ provider });
-    if (error) {
-      setErrorMsg(error.message);
-    }
-    // No need to navigate — user will be redirected back to your app
+    if (error) setErrorMsg(error.message);
   };
 
   return (
     <div className="auth-form">
       <h2>Sign In</h2>
-
       {errorMsg && <p className="error">{errorMsg}</p>}
-
       <input
         type="email"
         placeholder="Email"
@@ -48,9 +55,7 @@ export default function SignIn() {
         value={password}
       />
       <button onClick={handleSignIn}>Sign In with Email</button>
-
-      <hr style={{ margin: "1rem 0" }} />
-
+      <hr />
       <button onClick={() => handleOAuthSignIn("google")}>
         Sign In with Google
       </button>
