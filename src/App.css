@@ -182,6 +182,28 @@
   transform: translateY(-1px);
 }
 
+.oauth-button.twitter {
+  background: #1DA1F2;
+  color: white;
+  box-shadow: 0 2px 4px rgba(29, 161, 242, 0.2);
+  transition: all var(--transition-normal);
+}
+
+.oauth-button.twitter:hover:not(:disabled) {
+  background: #1a8cd8;
+  box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);
+  transform: translateY(-1px);
+}
+
+.oauth-button.twitter:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(29, 161, 242, 0.2);
+}
+
+.oauth-button.twitter svg {
+  fill: white;
+}
+
 /* Home Page Styles */
 .home-container {
   min-height: 100vh;
