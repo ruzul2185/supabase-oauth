@@ -20,6 +20,7 @@ export default function AuthCallback() {
         if (sessionError) throw sessionError;
 
         if (session && mounted) {
+          console.log(session);
           navigate("/");
           return;
         }
