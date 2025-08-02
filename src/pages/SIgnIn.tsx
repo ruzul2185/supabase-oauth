@@ -53,17 +53,27 @@ export default function SignIn() {
     setOauthLoading(provider);
     setErrorMsg("");
 
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: `${window.location.origin}/home`,
-      },
-    });
+    try {
+      // Use the Supabase callback URL directly for all providers
+      const redirectUrl = 'https://zaltbfsapxetnulhzpsk.supabase.co/auth/v1/callback';
 
-    setOauthLoading(null);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: redirectUrl,
+          queryParams: {
+            // This ensures we get the refresh token back
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
 
-    if (error) {
-      setErrorMsg(error.message);
+      if (error) throw error;
+    } catch (error: any) {
+      setErrorMsg(error?.message || 'Failed to sign in with ' + provider);
+    } finally {
+      setOauthLoading(null);
     }
   };
 

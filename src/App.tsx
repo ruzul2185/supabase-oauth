@@ -5,6 +5,7 @@ import ProtectedRoute from "./auth/protectedRoute";
 import SignIn from "./pages/SIgnIn";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
+import AuthCallback from "./pages/AuthCallback";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Routes>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route
             path="/"
             element={
